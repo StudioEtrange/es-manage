@@ -31,7 +31,7 @@ function usage() {
     echo " L     kibana run [--daemon] : run single kibana on current host"
     echo " L     kibana kill : stop all kibana instances on current host"
     echo " L     kibana connect --target=<host:port> : connect kibana on current host to a target elasticsearch instance"
-    echo " L     kibana listen --host=<ip|interface> : set es listening interface or ip. If it is an interface use this format : _eth0_. For full access use 0.0.0.0"
+    echo " L     kibana listen --host=<ip|interface> : set es listening ip. For full access use 0.0.0.0"
     echo " o-- LOGSTASH management :"
     echo " L     logstash install [--version=<version>] : install logstash on current host"
     echo " L     logstash home : print logstash install path"
