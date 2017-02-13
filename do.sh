@@ -24,7 +24,7 @@ function usage() {
     echo " L     es kill : stop all elasticsearch instances on current host"
     echo " L     es create --idx=<index> [--mapping=<json_file>]"
     echo " L     es delete --idx=<index> [--mapping=<json_file>]"
-    echo " L     es listen --host=<ip|interface> : set es listening interface or ip. If it is an interface use this format : _eth0_ For full access use 0.0.0.0"
+    echo " L     es listen --host=<ip|interface> : set es listening interface or ip. If it is an interface use this format : _eth0_"
     echo " o-- KIBANA management :"
     echo " L     kibana install [--version=<version>] : install elasticsearch on current host"
     echo " L     kibana home : print kibana install path"
