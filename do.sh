@@ -202,9 +202,9 @@ if [ "$DOMAIN" = "kibana" ]; then
 
   if [ "$ACTION" = "install" ]; then
     if [ -z "$VERSION" ]; then
-      $STELLA_API feature_install elasticsearch
+      $STELLA_API feature_install kibana
     else
-      $STELLA_API feature_install elasticsearch#$VERSION
+      $STELLA_API feature_install kibana#$VERSION
     fi
   fi
 
