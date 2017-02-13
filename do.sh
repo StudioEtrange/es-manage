@@ -31,6 +31,9 @@ function usage() {
     echo " L     kibana run [--daemon] : run single elasticsearch on current host"
     echo " L     kibana kill : stop all elasticsearch instances on current host"
     echo " L     kibana connect --target=<host:port> : connect kibana on current host to a target elasticsearch instance"
+    echo " o-- LOGSTASH management :"
+    echo " L     logstash install [--version=<version>] : install logstash on current host"
+    echo " L     logstash home : print logstash install path"
     echo " o-- COPY management :"
     echo " L     es copy --source=<host:port> --target=<host:port> --idxsrc=<index_list> --idxtgt=<index_list> : copy data of an index from source to target"
     echo " L     es copy-metadata --source=<host:port> --target=<host:port> --idxsrc=<index_list> --idxtgt=<index_list> : copy analyzer and mapping of an index from source to target"
@@ -41,7 +44,7 @@ function usage() {
 
 # COMMAND LINE -----------------------------------------------------------------------------------
 PARAMETERS="
-DOMAIN=     '' 			a				'env es kibana'
+DOMAIN=     '' 			a				'env es kibana logstash'
 ACTION=     ''      a       'install home run kill create delete listen connect copy copy-metadata'
 "
 OPTIONS="
@@ -78,6 +81,18 @@ if [ "$DOMAIN" = "env" ]; then
     fi
   fi
 fi
+
+# ---------------------------  ES --------------------------------------------------------
+if [ "$DOMAIN" = "es" ]; then
+  if [ "$ACTION" = "install" ]; then
+    if [ -z "$VERSION" ]; then
+      $STELLA_API feature_install elasticsearch
+    else
+      $STELLA_API feature_install elasticsearch#$VERSION
+    fi
+  fi
+fi
+
 
 # ---------------------------  ES --------------------------------------------------------
 if [ "$DOMAIN" = "es" ]; then
