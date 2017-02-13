@@ -24,13 +24,14 @@ function usage() {
     echo " L     es kill : stop all elasticsearch instances on current host"
     echo " L     es create --idx=<index> [--mapping=<json_file>]"
     echo " L     es delete --idx=<index> [--mapping=<json_file>]"
-    echo " L     es listen --host=<ip|interface> : set es listening interface or ip with network.host var. If it is an interface use this format : _eth0_"
+    echo " L     es listen --host=<ip|interface> : set es listening interface or ip. If it is an interface use this format : _eth0_ For full access use 0.0.0.0"
     echo " o-- KIBANA management :"
     echo " L     kibana install [--version=<version>] : install elasticsearch on current host"
     echo " L     kibana home : print kibana install path"
     echo " L     kibana run [--daemon] : run single kibana on current host"
     echo " L     kibana kill : stop all kibana instances on current host"
     echo " L     kibana connect --target=<host:port> : connect kibana on current host to a target elasticsearch instance"
+    echo " L     kibana listen --host=<ip|interface> : set es listening interface or ip. If it is an interface use this format : _eth0_. For full access use 0.0.0.0"
     echo " o-- LOGSTASH management :"
     echo " L     logstash install [--version=<version>] : install logstash on current host"
     echo " L     logstash home : print logstash install path"
@@ -256,6 +257,13 @@ if [ "$DOMAIN" = "kibana" ]; then
     sed -i.bak 's/.*elasticsearch.url.*//' $KIBANA_HOME/config/kibana.yml
     echo "elasticsearch.url: \"$TARGET\"" >> $KIBANA_HOME/config/kibana.yml
   fi
+
+  if [ "$ACTION" = "listen" ]; then
+    echo "** KIBANA will listening on $HOST on next start"
+    sed -i.bak 's/.*server.host.*//' $KIBANA_HOME/config/kibana.yml
+    echo "server.host: $HOST" >> $KIBANA_HOME/config/kibana.yml
+  fi
+
 
   if [ "$ACTION" = "copy" ]; then
     TARGET_ES_HOST=$(echo "$TARGET" | sed "s/:.*$//")
