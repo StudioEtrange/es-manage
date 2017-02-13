@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 _STELLA_LINK_CURRENT_FILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-export STELLA_ROOT=$_STELLA_LINK_CURRENT_FILE_DIR/../stella
+export STELLA_ROOT=$_STELLA_LINK_CURRENT_FILE_DIR/stella
 STELLA_DEP_FLAVOUR=DEV
 STELLA_DEP_VERSION=0.0.4-10-gae64b5f
 [ ! "$1" == "chaining" ] && export STELLA_APP_ROOT=$_STELLA_LINK_CURRENT_FILE_DIR
