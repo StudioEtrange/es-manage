@@ -68,6 +68,8 @@ $STELLA_API feature_info elasticsearch ES
 export ES_HOME=$ES_FEAT_INSTALL_ROOT
 $STELLA_API feature_info kibana KIBANA
 export KIBANA_HOME=$KIBANA_FEAT_INSTALL_ROOT
+$STELLA_API feature_info logstash LOGSTASH
+export LOGSTASH_HOME=$LOGSTASH_FEAT_INSTALL_ROOT
 
 # ---------------------------  ENV --------------------------------------------------------
 if [ "$DOMAIN" = "env" ]; then
@@ -82,14 +84,18 @@ if [ "$DOMAIN" = "env" ]; then
   fi
 fi
 
-# ---------------------------  ES --------------------------------------------------------
-if [ "$DOMAIN" = "es" ]; then
+# ---------------------------  LOGSTASH --------------------------------------------------------
+if [ "$DOMAIN" = "logstash" ]; then
   if [ "$ACTION" = "install" ]; then
     if [ -z "$VERSION" ]; then
-      $STELLA_API feature_install elasticsearch
+      $STELLA_API feature_install logstash
     else
-      $STELLA_API feature_install elasticsearch#$VERSION
+      $STELLA_API feature_install logstash#$VERSION
     fi
+  fi
+
+  if [ "$ACTION" = "home" ]; then
+    echo "$LOGSTASH_HOME"
   fi
 fi
 
