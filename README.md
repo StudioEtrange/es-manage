@@ -1,6 +1,8 @@
 # Elasticsearch Management Tools
 
-Shell tools to manage Elasticsearch suite. Without polluting your system, nor using root/sudo. Everything in one single folder. No prerequired / external dependencies required. Everything needed will be downloaded. All you needs is internet and git.
+Shell tools to manage Elasticsearch suite.
+
+Without polluting your system, nor using root/sudo. Everything in one single folder. No prerequired / external dependencies required. Everything needed will be downloaded. All you need is internet and git.
 
 Works on Nix* & MacOS
 
@@ -16,9 +18,9 @@ Works on Nix* & MacOS
 ## Installation
 
 ```
-git clone https://github.com/StudioEtrange/support-dashboard
-cd support-dashboard
-./do.sh install env
+git clone https://github.com/StudioEtrange/es-manage
+cd es-manage
+./do.sh env install
 ```
 
 
