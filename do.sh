@@ -22,8 +22,8 @@ function usage() {
     echo " L     es home : print es install path"
     echo " L     es run [--daemon] [--heap] [--folder=<log_path>]: run single elasticsearch on current host"
     echo " L     es kill : stop all elasticsearch instances on current host"
-    echo " L     es create --idx=<index> [--mapping=<json_file>]"
-    echo " L     es delete --idx=<index> [--mapping=<json_file>]"
+    echo " L     es create --idx=<index> [--target=<host:port>] [--mapping=<json_file>]"
+    echo " L     es delete --idx=<index> [--target=<host:port>]"
     echo " L     es listen --host=<ip|interface> : set es listening interface or ip. If it is an interface use this format : _eth0_"
     echo " o-- KIBANA management :"
     echo " L     kibana install [--version=<version>] : install elasticsearch on current host"
@@ -31,7 +31,7 @@ function usage() {
     echo " L     kibana run [--daemon] : run single kibana on current host"
     echo " L     kibana kill : stop all kibana instances on current host"
     echo " L     kibana connect --target=<host:port> : connect kibana on current host to a target elasticsearch instance"
-    echo " L     kibana listen --host=<ip|interface> : set es listening ip. For full access use 0.0.0.0"
+    echo " L     kibana listen --host=<ip> : set es listening ip. For full access use 0.0.0.0"
     echo " o-- LOGSTASH management :"
     echo " L     logstash install [--version=<version>] : install logstash on current host"
     echo " L     logstash home : print logstash install path"
@@ -60,6 +60,7 @@ IDX=''                             ''         'index'                s          
 IDXSRC=''                          ''         'index'                s           0       ''                      Index name.
 IDXTGT=''                          ''         'index'                s           0       ''                      Index name.
 VERSION=''                          ''         'version'                s           0       ''                      Version number as X_Y_Z.
+MAPPING=''                          'm'         'path'                s           0       ''                      mapping json file path.
 "
 
 $STELLA_API argparse "$0" "$OPTIONS" "$PARAMETERS" "ES Manage" "$(usage)" "" "$@"
@@ -139,6 +140,25 @@ if [ "$DOMAIN" = "es" ]; then
   if [ "$ACTION" = "home" ]; then
     echo "$ES_HOME"
   fi
+
+
+  if [ "$ACTION" = "create" ]; then
+    $STELLA_API require "curl" "curl" "SYSTEM"
+    [ -z "$IDX" ] && echo "** ERROR please specify an index with --idx" && exit 1
+
+    if [ -z "$MAPPING" ]; then
+      curl -XPOST $TARGET/$IDX
+    else
+      curl -XPOST $TARGET/$IDX --data-binary @$MAPPING
+    fi
+  fi
+
+  if [ "$ACTION" = "delete" ]; then
+    $STELLA_API require "curl" "curl" "SYSTEM"
+    [ -z "$IDX" ] && echo "** ERROR please specify an index with --idx" && exit 1
+    curl -XDELETE $TARGET/$IDX
+  fi
+
 
   if [ "$ACTION" = "listen" ]; then
     echo "** ES will listening on $HOST on next start"
