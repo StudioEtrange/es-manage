@@ -36,7 +36,7 @@ function usage() {
     echo " L     logstash install [--version=<version>] : install logstash on current host"
     echo " L     logstash home : print logstash install path"
     echo " o-- COPY management :"
-    echo " L     es copy --source=<host:port> --target=<host:port> --idxsrc=<index_list> --idxtgt=<index_list> : copy data of an index from source to target"
+    echo " L     es copy-data --source=<host:port> --target=<host:port> --idxsrc=<index_list> --idxtgt=<index_list> : copy data of an index from source to target"
     echo " L     es copy-metadata --source=<host:port> --target=<host:port> --idxsrc=<index_list> --idxtgt=<index_list> : copy analyzer and mapping of an index from source to target"
     echo " L     kibana copy --source=<host:port> --target=<host:port> : copy all kibana resource from an elasticsearch source to an elasticsearch target"
 }
@@ -46,7 +46,7 @@ function usage() {
 # COMMAND LINE -----------------------------------------------------------------------------------
 PARAMETERS="
 DOMAIN=     '' 			a				'env es kibana logstash'
-ACTION=     ''      a       'install home run kill create delete listen connect copy copy-metadata'
+ACTION=     ''      a       'install home run kill create delete listen connect copy-data copy-metadata'
 "
 OPTIONS="
 FORCE=''							  'f'		  ''					b			0		'1'					  Force.
@@ -178,9 +178,9 @@ if [ "$DOMAIN" = "es" ]; then
     cd $STELLA_APP_WORK_ROOT/elasticsearch-dump/bin
 
     s=0
-    for i in $INDEX_LIST_SOURCE; do
+    for i in $IDXSRC; do
       t=0
-      for j in $INDEX_LIST_TARGET; do
+      for j in $IDXTGT; do
         if [ "$s" = "$t" ]; then
           break
         fi
@@ -210,9 +210,9 @@ if [ "$DOMAIN" = "es" ]; then
     cd $STELLA_APP_WORK_ROOT/elasticsearch-dump/bin
 
     s=0
-    for i in $INDEX_LIST_SOURCE; do
+    for i in $IDXSRC; do
       t=0
-      for j in $INDEX_LIST_TARGET; do
+      for j in $IDXTGT; do
         if [ "$s" = "$t" ]; then
           break
         fi
