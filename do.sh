@@ -38,6 +38,7 @@ function usage() {
     echo " o-- COPY management :"
     echo " L     es copy-data --source=<host:port> --target=<host:port> --idxsrc=<index_list> --idxtgt=<index_list> : copy data of an index from source to target"
     echo " L     es copy-metadata --source=<host:port> --target=<host:port> --idxsrc=<index_list> --idxtgt=<index_list> : copy analyzer and mapping of an index from source to target"
+    echo " L     es export-data --source=<host:port> --idxsrc=<index_list> --file=<path> : export data to a json file"
     echo " L     kibana copy --source=<host:port> --target=<host:port> : copy all kibana resource from an elasticsearch source to an elasticsearch target"
 }
 
@@ -46,7 +47,7 @@ function usage() {
 # COMMAND LINE -----------------------------------------------------------------------------------
 PARAMETERS="
 DOMAIN=     '' 			a				'env es kibana logstash'
-ACTION=     ''      a       'install home run kill create delete listen connect copy-data copy-metadata'
+ACTION=     ''      a       'install home run kill create delete listen connect copy-data copy-metadata export-data'
 "
 OPTIONS="
 FORCE=''							  'f'		  ''					b			0		'1'					  Force.
@@ -61,6 +62,7 @@ IDXSRC=''                          ''         'index'                s          
 IDXTGT=''                          ''         'index'                s           0       ''                      Index name.
 VERSION=''                          ''         'version'                s           0       ''                      Version number as X_Y_Z.
 MAPPING=''                          'm'         'path'                s           0       ''                      mapping json file path.
+FILE=''                          ''         'path'                s           0       ''                      File path.
 "
 
 $STELLA_API argparse "$0" "$OPTIONS" "$PARAMETERS" "ES Manage" "$(usage)" "" "$@"
@@ -168,6 +170,25 @@ if [ "$DOMAIN" = "es" ]; then
     echo "** If you use Kibana, dont forget to connect it to this IP"
   fi
 
+
+  if [ "$ACTION" = "export-data" ]; then
+    SOURCE_ES_HOST=$(echo "$SOURCE" | sed "s/:.*$//")
+    $STELLA_API no_proxy_for "$SOURCE_ES_HOST"
+    cd $STELLA_APP_WORK_ROOT/elasticsearch-dump/bin
+
+    echo "=== INDEX SOURCE : $IDXSRC ==="
+    echo "=== TARGET FILE : $FILE ==="
+    if [ "$FILE" = "" ]; then
+      echo "**ERROR use --file option to specify a file path"
+      exit 1
+    fi
+    echo "** Data export"
+    ./elasticdump \
+      --input=http://$SOURCE/$IDXSRC \
+      --output=$FILE \
+      --limit=1000 \
+      --type=data
+  fi
 
   if [ "$ACTION" = "copy-data" ]; then
     TARGET_ES_HOST=$(echo "$TARGET" | sed "s/:.*$//")
