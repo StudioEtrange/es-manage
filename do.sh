@@ -149,8 +149,9 @@ if [ "$DOMAIN" = "es" ]; then
     [ -z "$IDX" ] && echo "** ERROR please specify an index with --idx" && exit 1
 
     if [ -z "$MAPPING" ]; then
-      curl -XPOST $TARGET/$IDX
+      curl -XPUT $TARGET/$IDX
     else
+      # TODO : do we need POST or PUT here ?
       curl -XPOST $TARGET/$IDX --data-binary @$MAPPING
     fi
   fi
