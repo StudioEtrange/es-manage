@@ -2,3 +2,5 @@
 workspace/
 cache/
 stella/
+logs/
+data/
